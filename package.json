@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.20.0",
     "better-sqlite3": "^7.1.0",
     "bufferutil": "^4.0.1",
     "enmap": "^5.7.1",
@@ -16,6 +17,7 @@
     "erlpack": "abalabahaha/erlpack",
     "moment": "^2.27.0",
     "moment-duration-format": "^2.3.2",
+    "node-cron": "^2.0.3",
     "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
