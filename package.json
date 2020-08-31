@@ -1,0 +1,24 @@
+{
+  "name": "modmail-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^7.1.0",
+    "bufferutil": "^4.0.1",
+    "enmap": "^5.7.1",
+    "eris": "^0.13.3",
+    "erlpack": "abalabahaha/erlpack",
+    "moment": "^2.27.0",
+    "moment-duration-format": "^2.3.2",
+    "zlib-sync": "^0.1.7"
+  },
+  "devDependencies": {
+    "eslint": "^7.7.0"
+  }
+}
