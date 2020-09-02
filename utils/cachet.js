@@ -45,9 +45,7 @@ module.exports = async () => {
         latency = Math.round(parseFloat(latency) * 1000);
 
         await cachetClient.post(`/metrics/${metric['gateway latency']}/points`, {
-            data: {
-                value: latency
-            }
+            value: latency
         });
 
         let status = await cachetClient.get(`/components/${comp['bot']}`);
