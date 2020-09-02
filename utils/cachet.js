@@ -6,12 +6,12 @@ const config = require('../config.js');
 module.exports = async () => {
     let prometheusUrl = `${config.prometheus.protocol}://${config.prometheus.host}:${config.prometheus.port}${config.prometheus.path}api/v1/`;
     let prometheusClient = axios.create({
-        baseUrl: prometheusUrl
+        baseURL: prometheusUrl
     });
 
     let cachetUrl = `${config.cachet.protocol}://${config.cachet.host}:${config.cachet.port}${config.cachet.path}api/v1/`;
     let cachetClient = axios.create({
-        baseUrl: cachetUrl,
+        baseURL: cachetUrl,
         headers: {
             'X-Cachet-Token': config.cachet.apiKey
         }
