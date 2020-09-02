@@ -73,7 +73,7 @@ module.exports = async bot => {
                     embed: newEmbed
                 });
 
-                //await msg.crosspost();
+                await msg.crosspost();
                 return;
             }
 
@@ -87,7 +87,7 @@ module.exports = async bot => {
             }
         } else if (!embed.title.includes('online')) {
             let update = await cachetClient.get(`/incidents/${incident.id}/updates`);
-            update = update.data.data.reverse()[0];
+            update = update.data.data[0];
 
             let newEmbed = {
                 title: embed.title,
@@ -111,7 +111,7 @@ module.exports = async bot => {
                 }
             });
 
-            //await msg.crosspost();
+            await msg.crosspost();
         }
     });
 };
