@@ -70,7 +70,7 @@ module.exports = async () => {
         });
         latencies = latencies.data.data.result.map(element => ({
             cluster: parseInt(element.metric.cluster),
-            value: Math.round(parseFloat(element.value[2]) * 1000)
+            value: Math.round(parseFloat(element.value[1]) * 1000)
         }));
 
         let healthyCount = 0;
