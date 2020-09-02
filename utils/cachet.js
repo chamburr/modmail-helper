@@ -44,7 +44,7 @@ module.exports = async () => {
         latency = latency.data.data.result[0].value[1];
         latency = Math.round(parseFloat(latency) * 1000);
 
-        await cachetClient.post(`/metrics/${comp['gateway latency']}/points`, {
+        await cachetClient.post(`/metrics/${metric['gateway latency']}/points`, {
             data: {
                 value: latency
             }
@@ -188,7 +188,7 @@ module.exports = async () => {
         let indicator = status.data.status.indicator;
 
         if (indicator === 'minor') {
-            let fault = status.components.find(element => {
+            let fault = status.data.components.find(element => {
                 return element.status !== 'operational' && element.status !== 'partial_outage';
             });
             if (!fault) {
