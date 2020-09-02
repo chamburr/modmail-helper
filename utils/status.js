@@ -40,7 +40,7 @@ module.exports = async bot => {
 
         if (incident.status !== 4) {
             let updates = await cachetClient.get(`/incidents/${incident.id}/updates`);
-            updates = updates.data;
+            updates = updates.data.data.reverse();
 
             let content = incident.message;
             for (let update of updates) {
@@ -50,7 +50,7 @@ module.exports = async bot => {
             let newEmbed = {
                 title: '',
                 description: content,
-                color: config.colors.primary,
+                color: embed.color,
                 timestamp: new Date(`${incident.created_at} UTC`).toISOString()
             };
 
@@ -60,8 +60,10 @@ module.exports = async bot => {
 
                 if (status <= 2) {
                     newEmbed.title = '<:idle:579210349203685377>';
+                    newEmbed.color = 0xffd700;
                 } else {
                     newEmbed.title = '<:dnd:579210348666552325>';
+                    newEmbed.color = 0xff0000;
                 }
 
                 newEmbed.title += ` ${incident.name}`;
@@ -75,7 +77,7 @@ module.exports = async bot => {
                 return;
             }
 
-            newEmbed.title = `${embed.split(' ')[0]} ${incident.message}`;
+            newEmbed.title = `${embed.title.split(' ')[0]} ${incident.message}`;
 
             if (JSON.stringify(newEmbed) !== JSON.stringify(embed)) {
                 await message.edit({
@@ -83,22 +85,33 @@ module.exports = async bot => {
                     embed: newEmbed
                 });
             }
-        } else {
-            if (!embed.title.includes('online')) {
-                let newEmbed = {
+        } else if (!embed.title.includes('online')) {
+            let update = await cachetClient.get(`/incidents/${incident.id}/updates`);
+            update = update.data.data.reverse()[0];
+
+            let newEmbed = {
+                title: embed.title,
+                description: (embed.description += `\n\n ${update.human_status} - ${update.message}`),
+                color: embed.color,
+                timestamp: embed.timestamp
+            };
+
+            await message.edit({
+                content: `<@&${config.roles.status}>`,
+                embed: newEmbed
+            });
+
+            let msg = await channel.createMessage({
+                content: `<@&${config.roles.status}>`,
+                embed: {
                     title: '<:online:579210349736230912> Operational',
                     description: 'All services are fully operational. Please report any issues you encounter.',
-                    color: config.colors.primary,
-                    timestamp: Date.now().toISOString()
-                };
+                    color: 0x00ff00,
+                    timestamp: new Date.toISOString()
+                }
+            });
 
-                let msg = await channel.createMessage({
-                    content: `<@&${config.roles.status}>`,
-                    embed: newEmbed
-                });
-
-                //await msg.crosspost();
-            }
+            //await msg.crosspost();
         }
     });
 };
