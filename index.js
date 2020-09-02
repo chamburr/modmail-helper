@@ -4,8 +4,6 @@ const Database = require('better-sqlite3');
 const Eris = require('eris');
 const config = require('./config.js');
 
-require('./utils/cachet.js')();
-
 const bot = new Eris(config.token, {
     compress: true,
     allowedMentions: {
@@ -17,6 +15,9 @@ const bot = new Eris(config.token, {
     defaultImageFormat: 'png',
     defaultImageSize: 512
 });
+
+require('./utils/cachet.js')(bot);
+require('./utils/status.js')(bot);
 
 bot.config = config;
 bot.commands = new Enmap();
