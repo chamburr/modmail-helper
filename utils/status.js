@@ -20,7 +20,7 @@ module.exports = async bot => {
         comp[element.name.toLowerCase()] = element.id;
     }
 
-    cron.schedule('*/10 * * * *', async () => {
+    cron.schedule('*/10 * * * * *', async () => {
         let incident = await cachetClient.get('/incidents', {
             params: {
                 per_page: 1
