@@ -20,7 +20,7 @@ module.exports = async bot => {
         comp[element.name.toLowerCase()] = element.id;
     }
 
-    cron.schedule('* * * * *', async () => {
+    cron.schedule('*/10 * * * *', async () => {
         let incident = await cachetClient.get('/incidents', {
             params: {
                 per_page: 1
@@ -107,7 +107,7 @@ module.exports = async bot => {
                     title: '<:online:579210349736230912> Operational',
                     description: 'All services are fully operational. Please report any issues you encounter.',
                     color: 0x00ff00,
-                    timestamp: new Date.toISOString()
+                    timestamp: new Date().toISOString()
                 }
             });
 
