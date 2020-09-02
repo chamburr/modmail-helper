@@ -22,8 +22,17 @@ module.exports = async () => {
     let components = await cachetClient.get('/components');
     components = components.data.data;
 
-    for (let component in components) {
-        comp[component.name.toLowerCase()] = component.id;
+    for (let element of components) {
+        comp[element.name.toLowerCase()] = element.id;
+    }
+
+    let metric = {};
+
+    let metrics = await cachetClient.get('/metrics');
+    metrics = metrics.data.data;
+
+    for (let element of metrics) {
+        metric[element.name.toLowerCase()] = element.id;
     }
 
     cron.schedule('* * * * *', async () => {
@@ -35,7 +44,7 @@ module.exports = async () => {
         latency = latency.data.data.result[0].value[1];
         latency = Math.round(parseFloat(latency) * 1000);
 
-        await cachetClient.post(`/metrics/${comp['bot']}/points`, {
+        await cachetClient.post(`/metrics/${comp['gateway latency']}/points`, {
             data: {
                 value: latency
             }
