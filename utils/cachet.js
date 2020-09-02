@@ -35,7 +35,7 @@ module.exports = async () => {
         metric[element.name.toLowerCase()] = element.id;
     }
 
-    cron.schedule('* * * * *', async () => {
+    cron.schedule('*/30 * * * * *', async () => {
         let latency = await prometheusClient.get('/query', {
             params: {
                 query: 'avg(modmail_latency)'
