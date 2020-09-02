@@ -4,6 +4,8 @@ const Database = require('better-sqlite3');
 const Eris = require('eris');
 const config = require('./config.js');
 
+require('./utils/cachet.js')();
+
 const bot = new Eris(config.token, {
     compress: true,
     allowedMentions: {
