@@ -3,7 +3,7 @@ const cron = require('node-cron');
 const pm2 = require('pm2');
 const config = require('../config.js');
 
-module.exports = async () => {
+module.exports = async bot => {
     let prometheusUrl = `${config.prometheus.protocol}://${config.prometheus.host}:${config.prometheus.port}${config.prometheus.path}api/v1/`;
     let prometheusClient = axios.create({
         baseURL: prometheusUrl
@@ -35,7 +35,7 @@ module.exports = async () => {
         metric[element.name.toLowerCase()] = element.id;
     }
 
-    cron.schedule('*/30 * * * * *', async () => {
+    cron.schedule('*/10 * * * * *', async () => {
         let latency = await prometheusClient.get('/query', {
             params: {
                 query: 'avg(modmail_latency)'
