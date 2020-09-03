@@ -77,7 +77,7 @@ module.exports = async bot => {
                 return;
             }
 
-            newEmbed.title = `${embed.title.split(' ')[0]} ${incident.message}`;
+            newEmbed.title = `${embed.title.split(' ')[0]} ${incident.name}`;
 
             if (JSON.stringify(newEmbed) !== JSON.stringify(embed)) {
                 await message.edit({
