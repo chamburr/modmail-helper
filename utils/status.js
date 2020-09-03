@@ -91,7 +91,7 @@ module.exports = async bot => {
 
             let newEmbed = {
                 title: embed.title,
-                description: (embed.description += `\n\n ${update.human_status} - ${update.message}`),
+                description: embed.description + `\n\n${update.human_status} - ${update.message}`,
                 color: embed.color,
                 timestamp: embed.timestamp
             };
