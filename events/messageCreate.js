@@ -2,8 +2,18 @@ const permission = require('../utils/permission.js');
 
 module.exports = async (bot, message) => {
     if (!message) return;
-    if (message.author.bot) return;
     if (message.channel.type === 1) return;
+
+    if (message.author.bot) {
+        if (message.channel.id === bot.config.channels.botJoinleave && message.embeds[0].title === 'Server Join') {
+            let id = message.embeds[0].description;
+            id = id.split(' ').slice(-1)[0].slice(1, -1);
+            setTimeout(() => {
+                bot.db.prepare('INSERT OR IGNORE INTO invite VALUES (?, ?, ?, ?)').run(id, '', 0, Date.now());
+            }, 5000);
+        }
+        return;
+    }
 
     let command;
     let args;

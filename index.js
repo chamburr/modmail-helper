@@ -5,6 +5,8 @@ const Eris = require('eris');
 const express = require('express');
 const config = require('./config.json');
 
+require('express-async-errors');
+
 const bot = new Eris(`Bot ${config.token}`, {
     compress: true,
     allowedMentions: {

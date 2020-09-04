@@ -63,9 +63,9 @@ exports.run = async (bot, message) => {
 };
 
 exports.help = {
-    name: 'info',
-    aliases: ['stats'],
-    usage: 'info',
+    name: 'stats',
+    aliases: [],
+    usage: 'stats',
     description: 'See some super cool statistics about me.',
     permLevel: 0
 };
