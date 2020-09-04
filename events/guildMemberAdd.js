@@ -12,4 +12,8 @@ module.exports = async (bot, guild, member) => {
             timestamp: new Date().toISOString()
         }
     });
+
+    setTimeout(() => {
+        bot.db.prepare('INSERT OR IGNORE INTO invite VALUES (?, ?, ?, ?)').run(member.user.id, '', 0, Date.now());
+    }, 5000);
 };

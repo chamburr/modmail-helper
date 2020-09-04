@@ -58,6 +58,8 @@ exports.run = async (bot, message, args) => {
     };
 
     for (let category in commands) {
+        if (commands[category].length === 0) continue;
+
         embed.fields.push({
             name: category.charAt(0).toUpperCase() + category.slice(1),
             value: commands[category].join('\n'),
