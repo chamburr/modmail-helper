@@ -8,7 +8,7 @@ exports.run = async (bot, message, args) => {
                 color: bot.config.colors.error
             }
         });
-        return
+        return;
     }
 
     try {

@@ -1,9 +1,10 @@
 const axios = require('axios');
 const cron = require('node-cron');
 const pm2 = require('pm2');
-const config = require('../config.js');
 
 module.exports = async bot => {
+    let config = bot.config;
+
     let prometheusUrl = `${config.prometheus.protocol}://${config.prometheus.host}:${config.prometheus.port}${config.prometheus.path}api/v1/`;
     let prometheusClient = axios.create({
         baseURL: prometheusUrl

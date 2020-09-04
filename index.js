@@ -2,9 +2,10 @@ const fs = require('fs');
 const Enmap = require('enmap');
 const Database = require('better-sqlite3');
 const Eris = require('eris');
-const config = require('./config.js');
+const express = require('express');
+const config = require('./config.json');
 
-const bot = new Eris(config.token, {
+const bot = new Eris(`Bot ${config.token}`, {
     compress: true,
     allowedMentions: {
         everyone: false,
@@ -16,13 +17,16 @@ const bot = new Eris(config.token, {
     defaultImageSize: 512
 });
 
-require('./utils/cachet.js')(bot);
-require('./utils/status.js')(bot);
-
 bot.config = config;
 bot.commands = new Enmap();
 bot.aliases = new Enmap();
 bot.db = new Database('data.db');
+bot.app = express();
+
+require('./utils/database.js')(bot);
+require('./utils/express.js')(bot);
+require('./utils/cachet.js')(bot);
+require('./utils/status.js')(bot);
 
 bot.getCommand = command => {
     if (bot.commands.has(command)) {
