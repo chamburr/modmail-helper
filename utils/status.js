@@ -1,8 +1,9 @@
 const axios = require('axios');
 const cron = require('node-cron');
-const config = require('../config.js');
 
 module.exports = async bot => {
+    let config = bot.config;
+
     let cachetUrl = `${config.cachet.protocol}://${config.cachet.host}:${config.cachet.port}${config.cachet.path}api/v1/`;
     let cachetClient = axios.create({
         baseURL: cachetUrl,

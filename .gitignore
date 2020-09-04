@@ -117,5 +117,5 @@ dist
 
 # Custom
 .DS_Store
-config.js
+config.json
 data.db
