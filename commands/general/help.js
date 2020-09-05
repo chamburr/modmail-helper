@@ -4,7 +4,7 @@ exports.run = async (bot, message, args) => {
     if (args[0]) {
         let cmd = bot.getCommand(args[0]);
         if (!cmd) {
-            message.channel.createMessage({
+            await message.channel.createMessage({
                 embed: {
                     description: `That command does not exist. Use \`${prefix}help\` to see all the commands`,
                     color: bot.config.colors.error
@@ -32,7 +32,7 @@ exports.run = async (bot, message, args) => {
             });
         }
 
-        message.channel.createMessage({
+        await message.channel.createMessage({
             embed: embed
         });
 
@@ -67,7 +67,7 @@ exports.run = async (bot, message, args) => {
         });
     }
 
-    message.channel.createMessage({
+    await message.channel.createMessage({
         embed: embed
     });
 };

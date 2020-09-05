@@ -1,5 +1,5 @@
 exports.run = async (bot, message) => {
-    message.channel.createMessage({
+    await message.channel.createMessage({
         embed: {
             description: 'Restart bot..',
             color: bot.config.colors.primary

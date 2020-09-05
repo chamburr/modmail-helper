@@ -45,7 +45,7 @@ module.exports = async (bot, message) => {
     }
 
     if (permLevel < cmd.help.permLevel) {
-        message.channel.createMessage({
+        await message.channel.createMessage({
             embed: {
                 title: 'Permission Denied',
                 description: 'You do not have permission to use this command.',

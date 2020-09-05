@@ -1,5 +1,5 @@
 module.exports = async bot => {
-    bot.createMessage(bot.config.channels.botEvent, {
+    await bot.createMessage(bot.config.channels.botEvent, {
         embed: {
             title: 'Shard Connected',
             color: 0x00ff00,

@@ -4,7 +4,7 @@ require('moment-duration-format');
 const package = require('../../package.json');
 
 exports.run = async (bot, message) => {
-    message.channel.createMessage({
+    await message.channel.createMessage({
         embed: {
             title: `${bot.user.username} Statistics`,
             fields: [
