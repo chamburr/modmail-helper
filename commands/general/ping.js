@@ -1,5 +1,5 @@
 exports.run = async (bot, message) => {
-    message.channel.createMessage({
+    await message.channel.createMessage({
         embed: {
             title: 'Pong!',
             description: `My current latency is ${Math.round(message.channel.guild.shard.latency * 10) / 10}ms.`,

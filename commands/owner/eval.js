@@ -2,7 +2,7 @@ exports.run = async (bot, message, args) => {
     let code = args.join(' ');
 
     if (!code) {
-        message.channel.createMessage({
+        await message.channel.createMessage({
             embed: {
                 description: 'Please supply something to evaluate.',
                 color: bot.config.colors.error
@@ -20,14 +20,14 @@ exports.run = async (bot, message, args) => {
 
         evaled = evaled.replace(/`/g, '`' + String.fromCharCode(8203));
 
-        message.channel.createMessage({
+        await message.channel.createMessage({
             embed: {
                 description: '```js\n' + evaled.substr(0, 2000) + '```',
                 color: bot.config.colors.primary
             }
         });
     } catch (err) {
-        message.channel.createMessage({
+        await message.channel.createMessage({
             embed: {
                 description: '```' + err.toString().substr(0, 2000) + '```',
                 color: bot.config.colors.error

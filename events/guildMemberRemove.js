@@ -1,7 +1,7 @@
 module.exports = async (bot, guild, member) => {
     if (guild.id !== bot.config.guild) return;
 
-    bot.createMessage(bot.config.channels.joinLeave, {
+    await bot.createMessage(bot.config.channels.joinLeave, {
         embed: {
             title: 'Member Leave',
             description: `${member.user.username}#${member.user.discriminator} (${member.user.id})`,
