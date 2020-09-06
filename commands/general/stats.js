@@ -66,6 +66,6 @@ exports.help = {
     name: 'stats',
     aliases: [],
     usage: 'stats',
-    description: 'See some super cool statistics about me.',
+    description: 'See super cool stats about me.',
     permLevel: 0
 };
