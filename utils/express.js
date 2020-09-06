@@ -271,8 +271,8 @@ module.exports = async bot => {
 
         let octokit = new Octokit();
         let stargazers = await octokit.paginate('GET /repos/:owner/:repo/stargazers', {
-            owner: 'octokit',
-            repo: 'rest.js'
+            owner: 'CHamburr',
+            repo: 'modmail'
         });
         stargazers = stargazers.map(element => element.login.toLowerCase());
 
