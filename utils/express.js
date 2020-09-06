@@ -16,10 +16,26 @@ module.exports = async bot => {
 
     bot.referrals = {};
 
+    // eslint-disable-next-line no-unused-vars
+    function keepRawBody(req, res, buf, encoding) {
+        req.rawBody = buf;
+    }
+
     bot.app.set('x-powered-by', false);
     bot.app.use(timeout(12000));
-    bot.app.use(bodyParser.json({ type: 'application/json' }));
-    bot.app.use(bodyParser.urlencoded({ type: 'application/x-www-form-urlencoded', extended: true }));
+    bot.app.use(
+        bodyParser.json({
+            type: 'application/json',
+            verify: keepRawBody
+        })
+    );
+    bot.app.use(
+        bodyParser.urlencoded({
+            type: 'application/x-www-form-urlencoded',
+            extended: true,
+            verify: keepRawBody
+        })
+    );
 
     bot.app.get('/user', async (req, res) => {
         if (!req.query.id && !req.query.code) {
@@ -394,20 +410,20 @@ module.exports = async bot => {
     bot.app.post('/webhook/payment', async (req, res) => {
         res.status(200);
 
-        let query = 'cmd=_notify-validate&' + req.originalUrl.split('?')[1];
-        let validity = await axios.post(`https://ipnpb.paypal.com/cgi-bin/webscr?${query}`);
+        let query = 'cmd=_notify-validate&' + req.rawBody;
+        let validity = await axios.post('https://ipnpb.paypal.com/cgi-bin/webscr', query);
 
         if (validity.data.toLowerCase() !== 'valid') return;
-        if (req.query.receiver_email !== config.express.paypalEmail) return;
+        if (req.body.receiver_email !== config.express.paypalEmail) return;
 
         let guild = bot.guilds.get(config.guild);
         let channel = guild.channels.get(config.channels.payment);
-        let member = guild.members.get(req.query.custom);
+        let member = guild.members.get(req.body.custom);
         if (!member) return;
 
         await channel.createMessage({
             embed: {
-                title: `${req.query.payment_status} Payment`,
+                title: `${req.body.payment_status} Payment`,
                 fields: [
                     {
                         name: 'User',
@@ -416,12 +432,12 @@ module.exports = async bot => {
                     },
                     {
                         name: 'Customer',
-                        value: `${req.query.first_name} ${req.query.last_name}\n${req.query.payer_email}`,
+                        value: `${req.body.first_name} ${req.body.last_name}\n${req.body.payer_email}`,
                         inline: false
                     },
                     {
                         name: 'Product',
-                        value: `${req.query.item_name}\nAmount: ${req.query.mc_gross} ${req.query.mc_currency}`,
+                        value: `${req.body.item_name}\nAmount: ${req.body.mc_gross} ${req.body.mc_currency}`,
                         inline: false
                     }
                 ],
@@ -430,14 +446,14 @@ module.exports = async bot => {
             }
         });
 
-        if (req.query.payment_status.toLowerCase() !== 'completed') return;
-        if (req.query.mc_currency.toLowerCase() !== 'usd') return;
+        if (req.body.payment_status.toLowerCase() !== 'completed') return;
+        if (req.body.mc_currency.toLowerCase() !== 'usd') return;
 
-        if (parseInt(req.query.mc_gross) >= 90) {
+        if (parseInt(req.body.mc_gross) >= 90) {
             member.addRole(config.roles.premium5);
-        } else if (parseInt(req.query.mc_gross) >= 60) {
+        } else if (parseInt(req.body.mc_gross) >= 60) {
             member.addRole(config.roles.premium3);
-        } else if (parseInt(req.query.mc_gross) >= 30) {
+        } else if (parseInt(req.body.mc_gross) >= 30) {
             member.addRole(config.roles.premium1);
         } else {
             return;
@@ -447,10 +463,10 @@ module.exports = async bot => {
             content: `<@${member.user.id}>`,
             embed: {
                 title: `Welcome, ${member.user.username}`,
-                description: `Thank you for purchasing ${req.query.item_name}! <3`,
+                description: `Thank you for purchasing ${req.body.item_name}! <3`,
                 color: config.colors.primary,
                 footer: {
-                    text: 'Check out #patrons-welcome'
+                    text: 'Check out #patrons-welcome!'
                 },
                 timestamp: new Date().toISOString()
             }
