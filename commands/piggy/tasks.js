@@ -43,7 +43,7 @@ exports.run = async (bot, message) => {
             name: `Review the bot - $${bot.config.rewards.review}`,
             value:
                 `Review the bot [here](${bot.config.links.bod}). ` +
-                'Then, visit [this link](https://api.modmail.xyz/check/review-bod) to verify.',
+                `Then, visit [this link](https://api.modmail.xyz/check/review-bod?id=${message.author.id}) to verify.`,
             inline: false
         });
     }
