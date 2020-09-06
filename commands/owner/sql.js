@@ -13,7 +13,13 @@ exports.run = async (bot, message, args) => {
 
     try {
         let statement = bot.db.prepare(code);
-        let data = statement.all();
+        let data = [];
+
+        try {
+            data = statement.all();
+        } catch (err) {
+            statement.run();
+        }
 
         if (data.length === 0) {
             message.channel.createMessage({

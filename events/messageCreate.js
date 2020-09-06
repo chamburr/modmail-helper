@@ -5,7 +5,7 @@ module.exports = async (bot, message) => {
     if (message.channel.type === 1) return;
 
     if (message.author.bot) {
-        if (message.channel.id === bot.config.channels.botJoinleave && message.embeds[0].title === 'Server Join') {
+        if (message.channel.id === bot.config.channels.botJoinLeave && message.embeds[0].title === 'Server Join') {
             let id = message.embeds[0].description;
             id = id.split(' ').slice(-1)[0].slice(1, -1);
             setTimeout(() => {
