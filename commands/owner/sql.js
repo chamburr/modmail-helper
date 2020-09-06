@@ -13,8 +13,6 @@ exports.run = async (bot, message, args) => {
 
     try {
         let statement = bot.db.prepare(code);
-        statement.raw(true);
-
         let data = statement.all();
 
         if (data.length === 0) {
