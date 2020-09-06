@@ -383,7 +383,7 @@ module.exports = async bot => {
             return;
         }
 
-        res.status(200);
+        res.status(200).end();
 
         let guild = bot.guilds.get(config.guild);
         let channel = guild.channels.get(config.channels.piggy);
@@ -408,12 +408,12 @@ module.exports = async bot => {
     });
 
     bot.app.post('/webhook/payment', async (req, res) => {
-        res.status(200);
+        res.status(200).end();
 
         let query = 'cmd=_notify-validate&' + req.rawBody;
         let validity = await axios.post('https://ipnpb.paypal.com/cgi-bin/webscr', query);
 
-        if (validity.data.toLowerCase() !== 'valid') return;
+        if (validity.data.toLowerCase() !== 'verified') return;
         if (req.body.receiver_email !== config.express.paypalEmail) return;
 
         let guild = bot.guilds.get(config.guild);
@@ -432,12 +432,12 @@ module.exports = async bot => {
                     },
                     {
                         name: 'Customer',
-                        value: `${req.body.first_name} ${req.body.last_name}\n${req.body.payer_email}`,
+                        value: `${req.body.first_name} ${req.body.last_name} (${req.body.payer_email})`,
                         inline: false
                     },
                     {
                         name: 'Product',
-                        value: `${req.body.item_name}\nAmount: ${req.body.mc_gross} ${req.body.mc_currency}`,
+                        value: `${req.body.item_name1}\nAmount: ${req.body.mc_gross} ${req.body.mc_currency}`,
                         inline: false
                     }
                 ],
@@ -459,11 +459,13 @@ module.exports = async bot => {
             return;
         }
 
+        channel = guild.channels.get(config.channels.patron);
+
         await channel.createMessage({
             content: `<@${member.user.id}>`,
             embed: {
                 title: `Welcome, ${member.user.username}`,
-                description: `Thank you for purchasing ${req.body.item_name}! <3`,
+                description: `Thank you for purchasing ${req.body.item_name1}! <3`,
                 color: config.colors.primary,
                 footer: {
                     text: 'Check out #patrons-welcome!'
