@@ -269,11 +269,15 @@ module.exports = async bot => {
             return;
         }
 
-        let octokit = new Octokit();
+        let octokit = new Octokit({
+            auth: config.githubToken
+        });
+
         let stargazers = await octokit.paginate('GET /repos/:owner/:repo/stargazers', {
             owner: 'CHamburr',
             repo: 'modmail'
         });
+
         stargazers = stargazers.map(element => element.login.toLowerCase());
 
         if (!stargazers.includes(github.name.toLowerCase())) {
