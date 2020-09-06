@@ -237,7 +237,7 @@ module.exports = async bot => {
             token = await bot.oauth.tokenRequest({
                 code: req.query.code,
                 scope: ['identify', 'connections'],
-                grant_type: 'authorization_code',
+                grantType: 'authorization_code',
                 redirectUri: 'https://api.modmail.xyz/check/github'
             });
             token = token.access_token;
