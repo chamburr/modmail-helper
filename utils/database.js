@@ -7,7 +7,7 @@ module.exports = async bot => {
             (
                 id      text    NOT NULL PRIMARY KEY,
                 credit  integer NOT NULL,
-                created text    NOT NULL
+                created integer NOT NULL
             )`
         )
         .run();
@@ -19,7 +19,7 @@ module.exports = async bot => {
                 user    text    NOT NULL,
                 type    text    NOT NULL,
                 reward  integer NOT NULL,
-                created text    NOT NULL
+                created integer NOT NULL
             )`
         )
         .run();
@@ -31,7 +31,7 @@ module.exports = async bot => {
                 guild    text    NOT NULL PRIMARY KEY,
                 referrer text    NOT NULL,
                 reward   integer NOT NULL,
-                created  text    NOT NULL
+                created  integer NOT NULL
             )`
         )
         .run();
@@ -43,7 +43,7 @@ module.exports = async bot => {
                 user     text    NOT NULL PRIMARY KEY,
                 referrer text    NOT NULL,
                 reward   integer NOT NULL,
-                created  text    NOT NULL
+                created  integer NOT NULL
             )`
         )
         .run();
@@ -57,17 +57,32 @@ module.exports = async bot => {
         return user;
     };
 
+    bot.addCredit = (id, amount) => {
+        let user = bot.getUser(id);
+        let credit = user.credit + amount;
+        bot.db.prepare('UPDATE user SET credit=? WHERE id=?').run(credit, id);
+    };
+
+    bot.addTask = (id, task, amount) => {
+        bot.addCredit(id, amount);
+        bot.db.prepare('INSERT INTO task VALUES (?, ?, ?, ?)').run(id, task, amount, Date.now());
+    };
+
     bot.getTasks = id => {
         let tasks = ['daily', 'weekly', 'github', 'review_bod', 'vote_topgg', 'vote_dbl', 'vote_bfd', 'vote_boat'];
         let invites = config.limits.invite;
-        let refers = config.limits.refers;
+        let servers = config.limits.server;
 
-        let completed = bot.db.prepare('SELECT * FROM task WHERE user=?').all(id);
+        bot.getUser(id);
+        let task = bot.db.prepare('SELECT * FROM task WHERE user=?').all(id);
+        let invite = bot.db.prepare('SELECT * FROM invite WHERE referrer=?').all(id);
+        let server = bot.db.prepare('SELECT * FROM server WHERE referrer=?').all(id);
 
-        for (let element of completed) {
+        let dayMs = 86400000;
+        let epochMn = Date.now() - (Date.now() % dayMs);
+
+        for (let element of task) {
             let duration = Date.now() - element.created;
-            let dayMs = 86400000;
-            let epochMn = Date.now() - (Date.now() % dayMs);
 
             if (
                 element.type === 'github' ||
@@ -81,23 +96,27 @@ module.exports = async bot => {
             ) {
                 let index = tasks.indexOf(element.type);
                 if (index !== -1) tasks.splice(index, 1);
-            } else if (element.type === 'invite' && element.created >= epochMn) {
+            }
+        }
+
+        for (let element of invite) {
+            if (element.created >= epochMn) {
                 invites -= 1;
-            } else if (element.type === 'refer' && element.created >= epochMn) {
-                refers -= 1;
+            }
+        }
+
+        for (let element of server) {
+            if (element.created >= epochMn) {
+                servers -= 1;
             }
         }
 
         if (invites < 0) invites = 0;
-        if (refers < 0) refers = 0;
+        if (servers < 0) servers = 0;
 
-        tasks.push(...Array.from(invites).fill('invite'));
-        tasks.push(...Array.from(refers).fill('refer'));
+        tasks.push(...new Array(invites).fill('invite'));
+        tasks.push(...new Array(servers).fill('server'));
 
         return tasks;
-    };
-
-    bot.getTotal = () => {
-        return bot.db.prepare('SELECT SUM(credit) as total FROM user').get().total;
     };
 };
