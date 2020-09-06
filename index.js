@@ -27,8 +27,8 @@ bot.app = express();
 
 require('./utils/database.js')(bot);
 require('./utils/express.js')(bot);
-//require('./utils/cachet.js')(bot);
-//require('./utils/status.js')(bot);
+require('./utils/cachet.js')(bot);
+require('./utils/status.js')(bot);
 
 bot.getCommand = command => {
     if (bot.commands.has(command)) {
