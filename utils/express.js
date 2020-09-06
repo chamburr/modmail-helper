@@ -103,7 +103,7 @@ module.exports = async bot => {
             maxRedirects: 0,
             validateStatus: status => status >= 200 && status < 400
         });
-        url = `${url.headers.location}&state=${id}`;
+        url = `${url.headers.location}&state=${req.params.id}`;
 
         res.redirect(url);
     });
@@ -211,12 +211,12 @@ module.exports = async bot => {
 
         let user = await bot.oauth.getUser(token);
 
-        bot.referrals[member.user.id] = user.id;
+        bot.referrals[user.id] = member.user.id;
 
         res.redirect('https://modmail.xyz/support');
 
         setTimeout(async () => {
-            delete bot.referrals[member.user.id];
+            delete bot.referrals[user.id];
         }, 300000);
     });
 
@@ -287,14 +287,12 @@ module.exports = async bot => {
 
         res.json({ success: true });
 
-        bot.db
-            .prepare('INSERT INTO task VALUES (?, ?, ?, ?)')
-            .run(member.user.id, 'github', config.rewards.github, Date.now());
+        bot.addTask(member.user.id, 'github', config.rewards.github);
 
         let channel = guild.channels.get(config.channels.piggy);
 
         await channel.createMessage({
-            content: `<@${req.query.id}>`,
+            content: `<@${member.user.id}>`,
             embed: {
                 title: 'Thank You for Starring!',
                 description: `${config.rewards.github} dollars have been added to the piggy bank.`,
