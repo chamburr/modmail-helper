@@ -111,6 +111,11 @@ module.exports = async bot => {
             }
         }
 
+        if (config.owners.includes(id)) {
+            let index = tasks.indexOf('review_bod');
+            if (index !== -1) tasks.splice(index, 1);
+        }
+
         if (invites < 0) invites = 0;
         if (servers < 0) servers = 0;
 
