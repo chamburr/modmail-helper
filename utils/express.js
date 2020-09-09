@@ -439,7 +439,7 @@ module.exports = async bot => {
                     },
                     {
                         name: 'Product',
-                        value: `${req.body.item_name1}\nAmount: ${req.body.mc_gross} ${req.body.mc_currency}`,
+                        value: `${req.body.item_name}\nAmount: ${req.body.mc_gross} ${req.body.mc_currency}`,
                         inline: false
                     }
                 ],
@@ -467,7 +467,7 @@ module.exports = async bot => {
             content: `<@${member.user.id}>`,
             embed: {
                 title: `Welcome, ${member.user.username}`,
-                description: `Thank you for purchasing ${req.body.item_name1}! <3`,
+                description: `Thank you for purchasing ${req.body.item_name}! <3`,
                 color: config.colors.primary,
                 footer: {
                     text: 'Check out #patrons-welcome!'
