@@ -80,7 +80,7 @@ module.exports = async bot => {
 
             newEmbed.title = `${embed.title.split(' ')[0]} ${incident.name}`;
 
-            if (JSON.stringify(newEmbed) !== JSON.stringify(embed)) {
+            if (embed.title !== newEmbed.title || embed.description !== newEmbed.description) {
                 await message.edit({
                     content: `<@&${config.roles.status}>`,
                     embed: newEmbed
