@@ -421,7 +421,9 @@ module.exports = async bot => {
         let guild = bot.guilds.get(config.guild);
         let channel = guild.channels.get(config.channels.payment);
         let member = guild.members.get(req.body.custom);
-        if (!member) return;
+        let user = member.user || await bot.getRESTUser(req.body.custom);
+        
+        if (!user) return;
 
         await channel.createMessage({
             embed: {
@@ -429,7 +431,7 @@ module.exports = async bot => {
                 fields: [
                     {
                         name: 'User',
-                        value: `${member.user.username}#${member.user.discriminator} (${member.user.id})`,
+                        value: `${user.username}#${user.discriminator} (${user.id})`,
                         inline: false
                     },
                     {
@@ -447,7 +449,8 @@ module.exports = async bot => {
                 timestamp: new Date().toISOString()
             }
         });
-
+        
+        if (!member) return;
         if (req.body.payment_status.toLowerCase() !== 'completed') return;
         if (req.body.mc_currency.toLowerCase() !== 'usd') return;
 
