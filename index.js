@@ -16,7 +16,8 @@ const bot = new Eris(`Bot ${config.token}`, {
     },
     getAllUsers: true,
     defaultImageFormat: 'png',
-    defaultImageSize: 512
+    defaultImageSize: 512,
+    restMode: true
 });
 
 bot.config = config;
