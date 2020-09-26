@@ -421,7 +421,7 @@ module.exports = async bot => {
         let guild = bot.guilds.get(config.guild);
         let channel = guild.channels.get(config.channels.payment);
         let member = guild.members.get(req.body.custom);
-        let user = member.user || await bot.getRESTUser(req.body.custom);
+        let user = member ? member.user : await bot.getRESTUser(req.body.custom);
         
         if (!user) return;
 
