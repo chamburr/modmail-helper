@@ -24,6 +24,8 @@ module.exports = async bot => {
     cron.schedule('*/10 * * * * *', async () => {
         let incident = await cachetClient.get('/incidents', {
             params: {
+                sort: 'id',
+                order: 'desc',
                 per_page: 1
             }
         });
