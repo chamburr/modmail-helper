@@ -1,17 +1,31 @@
 exports.run = async (bot, message) => {
-    await message.channel.createMessage({
+  const start = new Date().getTime();
+  await message.channel
+    .createMessage({
+      embed: {
+        description: 'Checking latency...',
+        color: bot.config.colors.primary
+      }
+    })
+    .then((sentMessage) =>
+      sentMessage.edit({
         embed: {
-            title: 'Pong!',
-            description: `My current latency is ${Math.round(message.channel.guild.shard.latency * 10) / 10}ms.`,
-            color: bot.config.colors.primary
+          title: 'Pong!',
+          description: `Gateway latency: ${
+            Math.round(message.channel.guild.shard.latency * 10) / 10
+          }ms.\nHTTP API latency: ${Math.round(
+            new Date().getTime() - start
+          )}ms.`,
+          color: bot.config.colors.primary
         }
-    });
+      })
+    );
 };
 
 exports.help = {
-    name: 'ping',
-    aliases: [],
-    usage: 'ping',
-    description: 'Pong! Get my latency.',
-    permLevel: 0
+  name: 'ping',
+  aliases: [],
+  usage: 'ping',
+  description: 'Pong! Get my latency.',
+  permLevel: 0
 };
