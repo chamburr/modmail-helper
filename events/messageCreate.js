@@ -55,10 +55,7 @@ module.exports = async (bot, message) => {
         return;
     }
 
-    message = {
-        permLevel: permLevel,
-        ...message
-    };
+    message.permLevel = permLevel;
 
     cmd.run(bot, message, args);
 };
