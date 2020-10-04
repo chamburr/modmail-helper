@@ -12,13 +12,15 @@ exports.run = async (bot, message, args) => {
     }
 
     try {
-        let evaled = eval(code);
+        let evaled = await eval('(async () => { ' + code + ' })()');
 
         if (typeof evaled !== 'string') {
             evaled = require('util').inspect(evaled);
         }
 
-        evaled = evaled.replace(/`/g, '`' + String.fromCharCode(8203));
+        evaled = evaled
+            .replaceAll(bot.token.split(' ')[1], '--TOKEN--')
+            .replaceAll('`', '`' + String.fromCharCode(8203));
 
         await message.channel.createMessage({
             embed: {
