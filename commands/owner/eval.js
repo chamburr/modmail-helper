@@ -19,8 +19,8 @@ exports.run = async (bot, message, args) => {
         }
 
         evaled = evaled
-            .replaceAll(bot.token.split(' ')[1], '--TOKEN--')
-            .replaceAll('`', '`' + String.fromCharCode(8203));
+            .replace(new RegExp(bot.token.split(' ')[1], 'g'), '--TOKEN--')
+            .replace(new RegExp('`', 'g'), '`' + String.fromCharCode(8203));
 
         await message.channel.createMessage({
             embed: {
