@@ -454,9 +454,9 @@ module.exports = async bot => {
         if (req.body.payment_status.toLowerCase() !== 'completed') return;
         if (req.body.mc_currency.toLowerCase() !== 'usd') return;
 
-        if (parseInt(req.body.mc_gross) >= 76) {
+        if (parseInt(req.body.mc_gross) >= 90) {
             member.addRole(config.roles.premium5);
-        } else if (parseInt(req.body.mc_gross) >= 51) {
+        } else if (parseInt(req.body.mc_gross) >= 60) {
             member.addRole(config.roles.premium3);
         } else if (parseInt(req.body.mc_gross) >= 30) {
             member.addRole(config.roles.premium1);
