@@ -422,7 +422,7 @@ module.exports = async bot => {
         let channel = guild.channels.get(config.channels.payment);
         let member = guild.members.get(req.body.custom);
         let user = member ? member.user : await bot.getRESTUser(req.body.custom);
-        
+
         if (!user) return;
 
         await channel.createMessage({
@@ -449,7 +449,7 @@ module.exports = async bot => {
                 timestamp: new Date().toISOString()
             }
         });
-        
+
         if (!member) return;
         if (req.body.payment_status.toLowerCase() !== 'completed') return;
         if (req.body.mc_currency.toLowerCase() !== 'usd') return;

@@ -39,7 +39,7 @@ module.exports = async bot => {
     cron.schedule('*/10 * * * * *', async () => {
         let latency = await prometheusClient.get('/query', {
             params: {
-                query: 'avg(modmail_latency)'
+                query: 'avg(gateway_latencies)'
             }
         });
         latency = latency.data.data.result[0].value[1];
@@ -68,31 +68,19 @@ module.exports = async bot => {
     cron.schedule('* * * * *', async () => {
         let latencies = await prometheusClient.get('/query', {
             params: {
-                query: 'modmail_latency'
+                query: 'gateway_latencies'
             }
         });
         latencies = latencies.data.data.result.map(element => ({
-            cluster: parseInt(element.metric.cluster),
+            shard: parseInt(element.metric.shard),
             value: Math.round(parseFloat(element.value[1]) * 1000)
         }));
 
         let healthyCount = 0;
 
         for (let element of latencies) {
-            if (element.value === 0) {
-                await cachetClient.put(`/components/${comp['cluster ' + element.cluster]}`, {
-                    status: 4
-                });
-            } else if (element.value >= config.latencyThreshold) {
+            if (element.value < config.latencyThreshold) {
                 healthyCount += 1;
-                await cachetClient.put(`/components/${comp['cluster ' + element.cluster]}`, {
-                    status: 2
-                });
-            } else if (element.value < config.latencyThreshold) {
-                healthyCount += 1;
-                await cachetClient.put(`/components/${comp['cluster ' + element.cluster]}`, {
-                    status: 1
-                });
             }
         }
 
