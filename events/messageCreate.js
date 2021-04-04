@@ -1,4 +1,26 @@
-const permission = require('../utils/permission.js');
+const config = require('../config.json');
+
+const permission = [
+    {
+        level: 0,
+        check: () => {
+            return true;
+        }
+    },
+    {
+        level: 9,
+        check: message => {
+            return config.admins.includes(message.author.id);
+        }
+    },
+    {
+        level: 10,
+        check: message => {
+            return config.owners.includes(message.author.id);
+        }
+    }
+];
+
 
 module.exports = async (bot, message) => {
     if (!message) return;
