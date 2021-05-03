@@ -1,50 +1,25 @@
-const permission = require('../utils/permission.js');
-
 module.exports = async (bot, message) => {
     if (!message) return;
-    if (message.channel.type === 1) return;
+    if (message.channel.type !== 0) return;
 
-    if (message.author.bot) {
-        if (message.channel.id === bot.config.channels.botJoinLeave && message.embeds[0].title === 'Server Join') {
-            let id = message.embeds[0].description;
-            id = id.split(' ').slice(-1)[0].slice(1, -1);
-            setTimeout(() => {
-                bot.db.prepare('INSERT OR IGNORE INTO invite VALUES (?, ?, ?, ?)').run(id, '', 0, Date.now());
-            }, 5000);
-        }
-        return;
-    }
-
-    let command;
-    let args;
+    let command, args;
     let prefixes = [`<@${bot.user.id}>`, `<@!${bot.user.id}>`, bot.config.prefix];
 
     for (let prefix of prefixes) {
         if (message.content.startsWith(prefix)) {
             args = message.content.slice(prefix.length).trim().split(' ');
-            command = args.shift().toLowerCase();
+            command = bot.commands[args.shift().toLowerCase()];
+            args = args.join(' ');
             break;
         }
     }
 
     if (!command) return;
 
-    let cmd = bot.getCommand(command);
-
-    if (!cmd) return;
-
-    let permLevel = 0;
-    let permOrder = permission.slice(0).sort((a, b) => (a.level < b.level ? 1 : -1));
-
-    while (permOrder.length) {
-        let currentLevel = permOrder.shift();
-        if (currentLevel.check(message)) {
-            permLevel = currentLevel.level;
-            break;
-        }
-    }
-
-    if (permLevel < cmd.help.permLevel) {
+    if (
+        (command.help.permission == 'owner' && !message.member.roles.includes(bot.config.roles.owner)) ||
+        (command.help.permission == 'admin' && !message.member.roles.includes(bot.config.roles.admin))
+    ) {
         await message.channel.createMessage({
             embed: {
                 title: 'Permission Denied',
@@ -55,7 +30,5 @@ module.exports = async (bot, message) => {
         return;
     }
 
-    message.permLevel = permLevel;
-
-    cmd.run(bot, message, args);
+    command.run(bot, message, args);
 };

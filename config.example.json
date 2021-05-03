@@ -1,6 +1,4 @@
 {
-    "clientId": "",
-    "clientSecret": "",
     "token": "",
 
     "prefix": "",
@@ -12,87 +10,24 @@
 
     "guild": "",
 
-    "owners": [],
-    "admins": [],
-
     "channels": {
         "status": "",
         "joinLeave": "",
-        "piggy": "",
         "patron": "",
-        "payment": "",
-        "botEvent": "",
-        "botJoinLeave": ""
+        "payment": ""
     },
 
     "roles": {
+        "owner": "",
+        "admin": "",
         "status": "",
         "premium1": "",
         "premium3": "",
         "premium5": ""
     },
 
-    "colors": {
-        "primary": 0,
-        "error": 0
-    },
-
-    "modules": [],
-
-    "botId": "",
-    "botClientId": "",
-    "botClientSecret": "",
-
-    "githubToken": "",
-
-    "rewards": {
-        "daily": 0,
-        "weekly": 0,
-        "github": 0,
-        "review": 0,
-        "vote": 0,
-        "invite": 0,
-        "server": 0
-    },
-
-    "limits": {
-        "invite": 0,
-        "server": 0
-    },
-
-    "links": {
-        "github": "",
-        "topgg": "",
-        "dbl": "",
-        "bfd": "",
-        "boat": "",
-        "bod": ""
-    },
-
     "express": {
         "port": 0,
-        "paypalEmail": "",
-        "topggSecret": "",
-        "dblSecret": "",
-        "bfdSecret": "",
-        "boatSecret": "",
-        "bodToken": ""
-    },
-
-    "prometheus": {
-        "protocol": "",
-        "host": "",
-        "port": 0,
-        "path": ""
-    },
-
-    "cachet": {
-        "protocol": "",
-        "host": "",
-        "port": 0,
-        "path": "",
-        "apiKey": ""
-    },
-
-    "latencyThreshold": 0
+        "paypalEmail": ""
+    }
 }
