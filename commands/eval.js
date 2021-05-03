@@ -1,18 +1,16 @@
 exports.run = async (bot, message, args) => {
-    let code = args.join(' ');
-
-    if (!code) {
+    if (!args) {
         await message.channel.createMessage({
             embed: {
                 description: 'Please supply something to evaluate.',
-                color: bot.config.colors.error
+                color: 0xff0000
             }
         });
         return;
     }
 
     try {
-        let evaled = await eval('(async () => { ' + code + ' })()');
+        let evaled = await eval('(async () => { ' + args + ' })()');
 
         if (typeof evaled !== 'string') {
             evaled = require('util').inspect(evaled);
@@ -25,14 +23,14 @@ exports.run = async (bot, message, args) => {
         await message.channel.createMessage({
             embed: {
                 description: '```js\n' + evaled.substr(0, 2000) + '```',
-                color: bot.config.colors.primary
+                color: 0x1e90ff
             }
         });
     } catch (err) {
         await message.channel.createMessage({
             embed: {
                 description: '```' + err.toString().substr(0, 2000) + '```',
-                color: bot.config.colors.error
+                color: 0xff0000
             }
         });
     }
@@ -40,8 +38,5 @@ exports.run = async (bot, message, args) => {
 
 exports.help = {
     name: 'eval',
-    aliases: [],
-    usage: 'eval <code>',
-    description: 'Evaluate code.',
-    permLevel: 10
+    permission: 'owner'
 };

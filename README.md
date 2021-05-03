@@ -10,4 +10,4 @@ This is the private helper bot for the official ModMail server.
 
 ## License
 
-This project is licensed under [MIT License](https://github.com/CHamburr/modmail-helper/blob/master/LICENSE).
+This project is licensed under [MIT License](LICENSE).

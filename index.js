@@ -1,90 +1,41 @@
 const fs = require('fs');
-const Enmap = require('enmap');
-const Database = require('better-sqlite3');
 const Eris = require('eris');
 const express = require('express');
 const config = require('./config.json');
 
-require('express-async-errors');
-
 const bot = new Eris(`Bot ${config.token}`, {
-    compress: true,
     allowedMentions: {
         everyone: false,
-        roles: true,
+        roles: false,
         users: true
     },
     getAllUsers: true,
-    defaultImageFormat: 'png',
-    defaultImageSize: 512,
-    restMode: true
+    restMode: true,
+    intents: 771
 });
 
 bot.config = config;
-bot.commands = new Enmap();
-bot.aliases = new Enmap();
-bot.db = new Database('data.db');
-bot.app = express();
+bot.commands = {};
 
-require('./utils/database.js')(bot);
 require('./utils/express.js')(bot);
-require('./utils/cachet.js')(bot);
-require('./utils/status.js')(bot);
 
-bot.getCommand = command => {
-    if (bot.commands.has(command)) {
-        return bot.commands.get(command);
-    } else if (bot.aliases.has(command)) {
-        return bot.getCommand(bot.aliases.get(command));
-    } else {
-        return null;
-    }
-};
+fs.readdirSync('./commands/').forEach(f => {
+    if (f.startsWith('.')) return;
 
-bot.loadCommands = () => {
-    let files = fs.readdirSync('./commands/');
+    delete require.cache[require.resolve(`./commands/${f}`)];
+    let props = require(`./commands/${f}`);
 
-    files.forEach(f => {
-        if (f.startsWith('.')) return;
+    bot.commands[props.help.name] = props;
+});
 
-        let files2 = fs.readdirSync(`./commands/${f}/`);
-        files2.forEach(f2 => {
-            if (f2.startsWith('.')) return;
+fs.readdirSync('./events/').forEach(f => {
+    if (f.startsWith('.')) return;
 
-            delete require.cache[require.resolve(`./commands/${f}/${f2}`)];
-            let props = require(`./commands/${f}/${f2}`);
+    delete require.cache[require.resolve(`./events/${f}`)];
+    let props = require(`./events/${f}`);
 
-            bot.commands.set(props.help.name, {
-                ...props,
-                help: {
-                    category: f,
-                    ...props.help
-                }
-            });
-
-            props.help.aliases.forEach(alias => {
-                bot.aliases.set(alias, props.help.name);
-            });
-        });
-    });
-};
-
-bot.loadEvents = () => {
-    let files = fs.readdirSync('./events/');
-
-    files.forEach(f => {
-        if (f.startsWith('.')) return;
-
-        delete require.cache[require.resolve(`./events/${f}`)];
-        let props = require(`./events/${f}`);
-
-        let event = f.split('.')[0];
-        bot.removeAllListeners(event);
-        bot.on(event, props.bind(null, bot));
-    });
-};
-
-bot.loadCommands();
-bot.loadEvents();
+    bot.removeAllListeners(f.split('.')[0]);
+    bot.on(f.split('.')[0], props.bind(null, bot));
+});
 
 bot.connect();
