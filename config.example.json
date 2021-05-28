@@ -12,22 +12,12 @@
 
     "channels": {
         "status": "",
-        "joinLeave": "",
-        "patron": "",
-        "payment": ""
+        "joinLeave": ""
     },
 
     "roles": {
         "owner": "",
         "admin": "",
-        "status": "",
-        "premium1": "",
-        "premium3": "",
-        "premium5": ""
-    },
-
-    "express": {
-        "port": 0,
-        "paypalEmail": ""
+        "status": ""
     }
 }

@@ -25,7 +25,7 @@ exports.run = async (bot, message, args) => {
         }
     });
 
-    //await msg.crosspost();
+    await msg.crosspost();
 };
 
 exports.help = {

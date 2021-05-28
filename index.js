@@ -1,12 +1,11 @@
 const fs = require('fs');
 const Eris = require('eris');
-const express = require('express');
 const config = require('./config.json');
 
 const bot = new Eris(`Bot ${config.token}`, {
     allowedMentions: {
         everyone: false,
-        roles: false,
+        roles: true,
         users: true
     },
     getAllUsers: true,
@@ -16,8 +15,6 @@ const bot = new Eris(`Bot ${config.token}`, {
 
 bot.config = config;
 bot.commands = {};
-
-require('./utils/express.js')(bot);
 
 fs.readdirSync('./commands/').forEach(f => {
     if (f.startsWith('.')) return;
