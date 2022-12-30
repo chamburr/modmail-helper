@@ -9,9 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "bufferutil": "^4.0.3",
-    "eris": "^0.15.0",
-    "erlpack": "abalabahaha/erlpack"
+    "eris": "^0.15.0"
   },
   "devDependencies": {
     "eslint": "^7.25.0",
