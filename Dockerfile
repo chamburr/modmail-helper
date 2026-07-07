@@ -1,13 +1,15 @@
-FROM node:18-alpine
+FROM node:22-alpine
+
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json pnpm-lock.yaml ./
 
-RUN yarn --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile --prod
 
 COPY index.js ./
 COPY commands ./commands
 COPY events ./events
 
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]

@@ -1,8 +1,6 @@
 {
     "token": "",
 
-    "prefix": "",
-
     "status": {
         "name": "",
         "type": 0
@@ -11,8 +9,7 @@
     "guild": "",
 
     "channels": {
-        "status": "",
-        "joinLeave": ""
+        "status": ""
     },
 
     "roles": {

@@ -1,34 +1,34 @@
-exports.run = async (bot, message, args) => {
-    args = args.split('|');
-    let title = args.shift().trim();
-    let description = args.join('|').trim();
+module.exports = {
+    run: async (bot, interaction) => {
+        const title = interaction.data.options.find(o => o.name === 'title').value;
+        const description = interaction.data.options.find(o => o.name === 'description').value;
 
-    if (description === '') {
-        await message.channel.createMessage({
-            embed: {
-                description: 'Please supply title and description, split with `|`.',
-                color: 0xff0000
-            }
+        const guild = bot.guilds.get(interaction.guildID);
+        const channel = guild.channels.get(bot.config.channels.status);
+
+        const msg = await channel.createMessage({
+            content: `<@&${bot.config.roles.status}>`,
+            embeds: [
+                {
+                    title: `<:dnd:579210348666552325> ${title}`,
+                    description: description,
+                    color: 0xff0000,
+                    timestamp: new Date().toISOString()
+                }
+            ]
         });
-        return;
+
+        await msg.crosspost();
+        await interaction.createMessage({ content: 'Posted.', flags: 64 });
+    },
+    definition: {
+        name: 'major',
+        description: 'Post a major incident',
+        permission: 'admin',
+        options: [
+            { type: 3, name: 'title', description: 'Incident title', required: true },
+            { type: 3, name: 'description', description: 'Incident description', required: true }
+        ],
+        default_member_permissions: '32'
     }
-
-    let channel = message.channel.guild.channels.get(bot.config.channels.status);
-
-    let msg = await channel.createMessage({
-        content: `<@&${bot.config.roles.status}>`,
-        embed: {
-            title: `<:dnd:579210348666552325> ${title}`,
-            description: description,
-            color: 0xff0000,
-            timestamp: new Date().toISOString()
-        }
-    });
-
-    await msg.crosspost();
-};
-
-exports.help = {
-    name: 'major',
-    permission: 'admin'
 };

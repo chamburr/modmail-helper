@@ -1,14 +1,21 @@
-exports.run = async (bot, message) => {
-    await message.channel.createMessage({
-        embed: {
-            title: 'Pong!',
-            description: `My latency is ${Math.round(message.channel.guild.shard.latency * 10) / 10}ms.`,
-            color: 0x1e90ff
-        }
-    });
-};
+module.exports = {
+    run: async (bot, interaction) => {
+        const shard = bot.shards.get(bot.guildShardMap[interaction.guildID]);
 
-exports.help = {
-    name: 'ping',
-    permission: 'none'
+        await interaction.createMessage({
+            embeds: [
+                {
+                    title: 'Pong!',
+                    description: `My latency is ${Math.round(shard.latency * 10) / 10}ms.`,
+                    color: 0x1e90ff
+                }
+            ]
+        });
+    },
+    definition: {
+        name: 'ping',
+        description: 'Check bot latency',
+        permission: 'none',
+        default_member_permissions: '32'
+    }
 };

@@ -8,9 +8,8 @@ const bot = new Eris(`Bot ${config.token}`, {
         roles: true,
         users: true
     },
-    getAllUsers: true,
     restMode: true,
-    intents: 771
+    intents: 1
 });
 
 bot.config = config;
@@ -22,7 +21,7 @@ fs.readdirSync('./commands/').forEach(f => {
     delete require.cache[require.resolve(`./commands/${f}`)];
     let props = require(`./commands/${f}`);
 
-    bot.commands[props.help.name] = props;
+    bot.commands[props.definition.name] = props;
 });
 
 fs.readdirSync('./events/').forEach(f => {
