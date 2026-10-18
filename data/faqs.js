@@ -1,19 +1,8 @@
 module.exports = [
     {
-        key: 'ask',
-        name: 'Ask your question directly',
-        title: "Don't just say `i need help`, tell us what you need help with!",
-        description: "We can't help until we know what's wrong, so skip the hello and post your problem straight away. It saves all of us time and we can jump in with a solution.",
-        fields: [
-            {
-                name: 'What to include',
-                value: '- What you were trying to do\n- What happened instead (an error message or screenshot helps a lot)\n- Your [server ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-) if it is about a specific server'
-            }
-        ]
-    },
-    {
         key: 'setup',
         name: 'Setting up the bot',
+        match: /(?:just )?added (?:modmail|the bot|bot) to my server|how (?:do i|to) set ?up|set ?up (?:the )?(?:bot|modmail)|(?:modmail|bot) set ?up/i,
         title: 'Setting Up ModMail',
         description: 'Setting up only takes a minute.',
         fields: [
@@ -43,6 +32,7 @@ module.exports = [
     {
         key: 'not-responding',
         name: 'Bot not responding',
+        match: /(?:doesn'?t seem to be|isn'?t|not) working|(?:modmail|bot) (?:is )?(?:not|isn'?t) respond|doesn'?t (?:seem to work|respond)|not responding|no response/i,
         title: 'Bot Not Responding',
         description: 'This is almost always a permissions or prefix issue. Go through these in order:',
         fields: [
@@ -72,6 +62,7 @@ module.exports = [
     {
         key: 'permissions',
         name: 'Permissions the bot needs',
+        match: /permissions?|missing access|administrator/i,
         title: 'Permissions ModMail Needs',
         description: "Make sure ModMail's role has all of these in **Server Settings > Roles**. Channel and category settings can still take them away, so check those too if something only breaks in one place.",
         fields: [
@@ -95,6 +86,7 @@ module.exports = [
     {
         key: 'ticket-visibility',
         name: 'Everyone can see tickets',
+        match: /every(?:one|body) can see|why can every(?:one|body) see|tickets? (?:are )?(?:public|visible)/i,
         title: 'Everyone Can See Tickets',
         description: 'This is usually another bot in your server changing the channel permissions, not ModMail. Check **Server Settings > Audit Log** to see which bot is editing them.',
         fields: [
@@ -116,6 +108,7 @@ module.exports = [
     {
         key: 'open-ticket',
         name: 'Opening a ticket',
+        match: /how (?:do i|to) (?:send a (?:message|msg) to|message|contact) (?:a|the) server|(?:create|open|make) (?:a )?ticket/i,
         title: 'Opening a Ticket',
         description: 'DM the bot and follow the prompts. That is the quickest way!',
         fields: [
@@ -133,6 +126,7 @@ module.exports = [
     {
         key: 'dm-blocked',
         name: 'Message could not be delivered',
+        match: /could ?n[o']t be delivered|not delivered|only accepting d(?:irect message|m)s from friends|don'?t share a server|no (?:shared|mutual) servers?|\bclyde\b/i,
         title: 'Message Not Delivered',
         description: 'If you get **"your message could not be delivered"**, your privacy settings are blocking DMs from the server. Fix it with either option below, then try again.',
         fields: [
@@ -150,6 +144,7 @@ module.exports = [
     {
         key: 'wrong-server',
         name: 'Wrong server or banned',
+        match: /\b(?:un)?ban(?:ned)?\b|appeal|racefactory|bloxburg|wrong server/i,
         title: 'Wrong Server',
         description: 'This server is for **ModMail bot** support only. We have no connection to other servers and cannot help with their issues, sorry.',
         fields: [
@@ -167,6 +162,7 @@ module.exports = [
     {
         key: 'custom-instance',
         name: 'Custom instance',
+        match: /custom (?:instance|bot)|private (?:instance|bot)|change (?:the )?bot'?s? (?:avatar|pfp|name|status)/i,
         title: 'Custom Instance',
         description: 'A custom instance is your own copy of ModMail with its own name and look. It costs **$60/year**. Contact <@381998065327931392> or <@365262543872327681> to get one.',
         fields: [
@@ -180,6 +176,7 @@ module.exports = [
     {
         key: 'selfhost',
         name: 'Self hosting and VPS',
+        match: /self[ -]?host|source code|(?:bot|modmail)'?s? (?:source|repo)|github|\bvps\b|replit|heroku/i,
         title: 'Self Hosting ModMail',
         description: "We don't support self hosting, so we can't help if something breaks. If you still want to, the [Self-hosting guide](https://github.com/chamburr/modmail#self-hosting) runs the latest version with Docker Compose. It assumes you know your way around the command line, Docker and Discord bots.",
         fields: [
@@ -206,6 +203,7 @@ module.exports = [
     {
         key: 'premium',
         name: 'Premium and logging',
+        match: /premium|patron|snippets?|greeting message|closing message|advanced logging/i,
         title: 'ModMail Premium',
         description: 'Premium is a one-time purchase. It adds greeting and closing messages, advanced logging, snippets, priority support and access to exclusive channels here. [See all features](https://modmail.xyz/premium).',
         fields: [
@@ -228,6 +226,7 @@ module.exports = [
     {
         key: 'verify',
         name: "Can't verify on the website",
+        match: /verif(?:y|ication|ied)|can'?t log ?in|login (?:link|page)/i,
         title: "Can't Verify?",
         description: 'Open the [verification link](https://modmail.xyz/login?redirect=/authorized) and log in with Discord. If it does not work, try these:',
         fields: [
@@ -245,9 +244,23 @@ module.exports = [
     {
         key: 'outage',
         name: 'ModMail is having issues',
+        match: /(?:modmail|the bot|bot) (?:is )?(?:down|offline)|outage|is it down|not sending my messages|can'?t find my servers?/i,
         title: 'ModMail Is Having Issues',
         description: "Thanks for letting us know. ModMail might be having issues right now, which can stop it from responding, sending your messages, or finding your servers.\n\nWe don't have an ETA. Any updates will be posted in the status channel.",
         status: true,
         related: ['not-responding']
+    },
+    {
+        key: 'ask',
+        name: 'Ask your question directly',
+        match: /why won'?t anyone help|i need (?:support|help)|support me|help me|can (?:someone|anyone) help/i,
+        title: "Don't just say `i need help`, tell us what you need help with!",
+        description: "We can't help until we know what's wrong, so skip the hello and post your problem straight away. It saves all of us time and we can jump in with a solution.",
+        fields: [
+            {
+                name: 'What to include',
+                value: '- What you were trying to do\n- What happened instead (an error message or screenshot helps a lot)\n- Your [server ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-) if it is about a specific server'
+            }
+        ]
     }
 ];

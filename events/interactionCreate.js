@@ -7,6 +7,12 @@ module.exports = async (bot, interaction) => {
         return;
     }
 
+    if (interaction.type === 3) {
+        const command = bot.commands[interaction.data.custom_id.split(':')[0]];
+        if (command && command.component) command.component(bot, interaction);
+        return;
+    }
+
     if (interaction.type !== 2) return;
 
     const command = bot.commands[interaction.data.name];
