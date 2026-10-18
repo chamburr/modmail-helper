@@ -11,5 +11,6 @@ RUN pnpm install --frozen-lockfile --prod
 COPY index.js ./
 COPY commands ./commands
 COPY events ./events
+COPY data ./data
 
 CMD ["pnpm", "start"]
