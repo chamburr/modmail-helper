@@ -34,4 +34,6 @@ fs.readdirSync('./events/').forEach(f => {
     bot.on(f.split('.')[0], props.bind(null, bot));
 });
 
+process.on('unhandledRejection', err => console.error(err));
+
 bot.connect();
