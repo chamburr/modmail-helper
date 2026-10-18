@@ -22,5 +22,21 @@ module.exports = async (bot, interaction) => {
         return;
     }
 
-    command.run(bot, interaction);
+    try {
+        await command.run(bot, interaction);
+    } catch (err) {
+        console.error(err);
+        await interaction
+            .createMessage({
+                embeds: [
+                    {
+                        title: 'Error',
+                        description: 'Something went wrong while running this command.',
+                        color: 0xff0000
+                    }
+                ],
+                flags: 64
+            })
+            .catch(() => {});
+    }
 };
