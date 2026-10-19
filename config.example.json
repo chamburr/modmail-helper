@@ -15,6 +15,7 @@
     "roles": {
         "owner": "",
         "admin": "",
-        "status": ""
+        "status": "",
+        "staff": []
     }
 }
